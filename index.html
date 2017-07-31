@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="images/pi.ico">
+    <title>Galeria</title>
+    <meta name="description" content="Galeria">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="HTML,CSS,XML,JavaScript">
+    <meta name="author" content="PROINFO Adam Świątek">
+
+    <style type="text/css">
+        body{
+            background:#eee;
+            display:flex;
+            flex-wrap:wrap;
+            justify-content: space-around;
+        }
+
+	    .photo{
+            margin: 10px 25px;
+            width: 120px;
+            background: white;
+            padding: 10px;
+            opacity: 0.7;
+            border-radius: 5px;
+            border: 1px solid silver;
+            box-sizing: border-box;
+
+            /*display: flex;*/
+            justify-content: space-around;
+            flex-wrap: wrap;
+
+            transform: rotate(5deg);
+            transition: 0.3s all ease-in-out;
+	    }
+
+        .photo img{
+            flex-basis: 100%;
+            width: 100px;
+        }
+
+        .photo figcaption{
+            margin-top:10px;
+			text-align: center;
+        }
+
+        .photo:nth-child(even){
+            transform: rotate(-2deg) scale(0.8);
+        }
+
+        .photo:hover{
+            opacity:1;
+            transition: 0.3s all ease-in-out;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+	<figure class="photo">
+        <img src="images/300.jpg" alt="300">
+        <figcaption>
+            300
+        </figcaption>
+    </figure>
+    <figure class="photo">
+        <img src="images/300.jpg" alt="300">
+        <figcaption>
+            300
+        </figcaption>
+    </figure>
+    <figure class="photo">
+        <img src="images/300.jpg" alt="300">
+        <figcaption>
+            300
+        </figcaption>
+    </figure>
+    <figure class="photo">
+        <img src="images/300.jpg" alt="300">
+        <figcaption>
+            300
+        </figcaption>
+    </figure>
+    <figure class="photo">
+        <img src="images/300.jpg" alt="300">
+        <figcaption>
+            300
+        </figcaption>
+    </figure>
+    <figure class="photo">
+        <img src="images/300.jpg" alt="300">
+        <figcaption>
+            300
+        </figcaption>
+    </figure>
+    <figure class="photo">
+        <img src="images/300.jpg" alt="300">
+        <figcaption>
+            300
+        </figcaption>
+    </figure>
+
+    <script>
+        //Makes an asynch request, loading the getimages.php file
+        function callForImages() {
+
+            //Create the request object
+            var httpReq = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+
+            //When it loads,
+            httpReq.onload = function () {
+
+                //Convert the result back into JSON
+                var result = JSON.parse(httpReq.responseText);
+
+                //Show the images
+                loadImages(result);
+            }
+
+            //Request the page
+            try {
+                httpReq.open("GET", "findImages.php", true);
+                httpReq.send(null);
+            } catch (e) {
+                console.log(e);
+            }
+
+        }
+
+        //Generates the images and sticks them in the container
+        function loadImages(images) {
+            //For each image,
+            for (var i = 0; i < images.length; i++) {
+
+                //Make a new image element, setting the source to the source in the array
+                let newImage = document.createElement("img");
+                newImage.setAttribute("src", images[i]);
+                console.log(images[i]);
+                let name = images[i].replace("images/", "");
+                newImage.setAttribute("alt", name);
+
+                let element = document.createElement("figure");
+                element.classList.add('photo');
+                element.appendChild(newImage);
+                let fig = document.createElement("figcaption");
+                fig.innerHTML = name;
+                element.appendChild(fig);
+                //Add it to the container
+                //imageContainer.appendChild(newImage);
+                document.body.appendChild(element);
+            }
+        }
+
+        callForImages();
+    </script>
+</body>
+</html>
