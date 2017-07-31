@@ -10,14 +10,28 @@
     <meta name="author" content="PROINFO Adam Świątek">
 
     <style type="text/css">
-        body{
-            background:#eee;
-            display:flex;
-            flex-wrap:wrap;
+        /* The Modal (background) */
+        .modal {
+            margin: 0px;
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 0px; /* Location of the box */
+            padding-left: 0px; /* Location of the box */
+            width: 100%; /*Full width*/
+            height: 100%; /* Full height */
+            background-color: rgba(0, 0, 0, 0.75);
+        }
+        
+        body {
+            margin: 0px;
+            background: #eee;
+            display: flex;
+            flex-wrap: wrap;
             justify-content: space-around;
         }
 
-	    .photo{
+        .photo {
             margin: 10px 25px;
             width: 120px;
             background: white;
@@ -26,81 +40,135 @@
             border-radius: 5px;
             border: 1px solid silver;
             box-sizing: border-box;
-
             /*display: flex;*/
             justify-content: space-around;
             flex-wrap: wrap;
-
             transform: rotate(5deg);
             transition: 0.3s all ease-in-out;
-	    }
-
-        .photo img{
-            flex-basis: 100%;
-            width: 100px;
+            display:table;
         }
 
-        .photo figcaption{
-            margin-top:10px;
-			text-align: center;
+            .photo img {
+                flex-basis: 100%;
+                width: 100px;
+                max-width: 100px;
+                display:table-caption;
+                caption-side:bottom;
+            }
+
+            .photo figcaption {
+                margin-top: 10px;
+                text-align: center;
+            }
+
+            .photo:nth-child(even) {
+                transform: rotate(-2deg) scale(0.8);
+            }
+
+            .photo:hover {
+                opacity: 1;
+                transition: 0.3s all ease-in-out;
+                transform: scale(1.1);
+            }
+
+        .imgScaling {
+            max-width: 80%;
+            max-height: 80%;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
         }
 
-        .photo:nth-child(even){
-            transform: rotate(-2deg) scale(0.8);
+        .divInActive {
+            display: none;
         }
 
-        .photo:hover{
-            opacity:1;
-            transition: 0.3s all ease-in-out;
-            transform: scale(1.1);
+        .divActive {
+            display: block;
+            visibility: visible;
+            opacity: 1;
+            animation: fade 0.7s;
+        }
+
+        @keyframes fade {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
         }
     </style>
 </head>
 <body>
-	<figure class="photo">
-        <img src="images/300.jpg" alt="300">
+    <figure class="photo">
+        <img src="images/300.jpg" alt="300" onclick="elementClick(this)">
         <figcaption>
             300
         </figcaption>
     </figure>
     <figure class="photo">
-        <img src="images/300.jpg" alt="300">
+        <img src="images/300.jpg" alt="300" onclick="elementClick(this)">
         <figcaption>
             300
         </figcaption>
     </figure>
     <figure class="photo">
-        <img src="images/300.jpg" alt="300">
+        <img src="images/300.jpg" alt="300" onclick="elementClick(this)">
         <figcaption>
             300
         </figcaption>
     </figure>
     <figure class="photo">
-        <img src="images/300.jpg" alt="300">
+        <img src="images/300.jpg" alt="300" onclick="elementClick(this)">
         <figcaption>
             300
         </figcaption>
     </figure>
     <figure class="photo">
-        <img src="images/300.jpg" alt="300">
+        <img src="images/300.jpg" alt="300" onclick="elementClick(this)">
         <figcaption>
             300
         </figcaption>
     </figure>
     <figure class="photo">
-        <img src="images/300.jpg" alt="300">
+        <img src="images/300.jpg" alt="300" onclick="elementClick(this)">
         <figcaption>
             300
         </figcaption>
     </figure>
     <figure class="photo">
-        <img src="images/300.jpg" alt="300">
+        <img src="images/300.jpg" alt="300" onclick="elementClick(this)">
         <figcaption>
             300
         </figcaption>
     </figure>
 
+    <div id="modalElement" class="modal" onclick="closeModal()">
+    </div>
+
     <script>
+
+        function closeModal(element) {
+            let modal = document.getElementById("modalElement");
+            modal.classList.remove("divActive");
+            modal.classList.add('divInActive');
+        }
+
+        function elementClick(element) {
+            let modal = document.getElementById("modalElement");
+            modal.innerHTML = '';
+            let imageClon = element.cloneNode(true);
+            imageClon.classList.add('imgScaling');
+            modal.appendChild(imageClon);
+            modal.classList.remove("divInActive");
+            modal.classList.add('divActive');
+        }
+
         //Makes an asynch request, loading the getimages.php file
         function callForImages() {
 
@@ -135,7 +203,7 @@
                 //Make a new image element, setting the source to the source in the array
                 let newImage = document.createElement("img");
                 newImage.setAttribute("src", images[i]);
-                console.log(images[i]);
+                newImage.setAttribute('onclick', 'elementClick(this)');
                 let name = images[i].replace("images/", "");
                 newImage.setAttribute("alt", name);
 
