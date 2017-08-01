@@ -16,7 +16,7 @@
         switch(ltrim(strstr($file, '.'), '.')) {
 
             //If the file is an image, add it to the array
-            case "jpg": case "jpeg":case "png":case "gif":
+            case "jpg": case "JPG": case "jpeg": case "JPEG":case "png":case "PNG":case "gif":case "GIF":
 
                 $result[] = $dir . "/" . $file;
 
