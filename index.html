@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="images/pi.ico">
+    <link rel="shortcut icon" href="icons/pi_icon.ico">
     <title>Galeria</title>
     <meta name="description" content="Galeria">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,7 +22,7 @@
             height: 100%; /* Full height */
             background-color: rgba(0, 0, 0, 0.75);
         }
-        
+
         body {
             margin: 0px;
             background: #eee;
@@ -31,80 +31,81 @@
             justify-content: space-around;
         }
 
-			@media only screen and (min-width: 1025px) {
-				.photo {
-					margin: 10px 25px;
-					width: 120px;
-					background: white;
-					padding: 10px;
-					opacity: 0.7;
-					border-radius: 5px;
-					border: 1px solid silver;
-					box-sizing: border-box;
-					/*display: flex;*/
-					justify-content: space-around;
-					flex-wrap: wrap;
-					transform: rotate(5deg);
-					transition: 0.3s all ease-in-out;
-					display:table;
-				}
-			}
-
-			@media only screen and (max-width: 1024px) {
-				.photo {
-					margin: 10px 25px;
-					width: 120px;
-					background: white;
-					padding: 10px;
-					opacity: 0.7;
-					border-radius: 5px;
-					border: 1px solid silver;
-					box-sizing: border-box;
-					/*display: flex;*/
-					justify-content: space-around;
-					flex-wrap: wrap;
-					transform: rotate(5deg);
-					/*transition: 0.3s all ease-in-out;*/
-					display:table;
-				}
-			}
-			
-            .photo img {
-                flex-basis: 100%;
-                width: 100px;
-                max-width: 100px;
-                display:table-caption;
-                caption-side:bottom;
+        @media only screen and (min-width: 1025px) {
+            .photo {
+                margin: 10px 25px;
+                width: 120px;
+                background: white;
+                padding: 10px;
+                opacity: 0.7;
+                border-radius: 5px;
+                border: 1px solid silver;
+                box-sizing: border-box;
+                /*display: flex;*/
+                justify-content: space-around;
+                flex-wrap: wrap;
+                transform: rotate(5deg);
+                transition: 0.3s all ease-in-out;
+                display: table;
             }
+        }
 
-            .photo figcaption {
-                margin-top: 10px;
-                text-align: center;
+        @media only screen and (max-width: 1024px) {
+            .photo {
+                margin: 10px 25px;
+                width: 120px;
+                background: white;
+                padding: 10px;
+                opacity: 0.7;
+                border-radius: 5px;
+                border: 1px solid silver;
+                box-sizing: border-box;
+                /*display: flex;*/
+                justify-content: space-around;
+                flex-wrap: wrap;
+                transform: rotate(5deg);
+                /*transition: 0.3s all ease-in-out;*/
+                display: table;
             }
+        }
 
-            .photo:nth-child(even) {
-                transform: rotate(-2deg) scale(0.8);
+        .photo img {
+            flex-basis: 100%;
+            width: 100px;
+            max-width: 100px;
+            display: table-caption;
+            caption-side: bottom;
+        }
+
+        .photo figcaption {
+            margin-top: 10px;
+            text-align: center;
+            font-size: small;
+        }
+
+        .photo:nth-child(even) {
+            transform: rotate(-2deg) scale(0.8);
+        }
+
+        @media only screen and (min-width: 1025px) {
+            .photo:hover {
+                opacity: 1;
+                transition: 0.3s all ease-in-out;
+                transform: scale(1.1);
             }
-			
-			@media only screen and (min-width: 1025px) {
-				.photo:hover {
-					opacity: 1;
-					transition: 0.3s all ease-in-out;
-					transform: scale(1.1);
-				}
-			}
-			
-			@media only screen and (max-width: 1024px) {
-				.photo:hover {
-					opacity: 1;
-					/*transition: 0.3s all ease-in-out;
-					transform: scale(1.1);*/
-				}
-			}
+        }
+
+        @media only screen and (max-width: 1024px) {
+            .photo:hover {
+                opacity: 1;
+                /*transition: 0.3s all ease-in-out;
+                    transform: scale(1.1);*/
+            }
+        }
 
         .imgScaling {
-            max-width: 80%;
-            max-height: 80%;
+            max-width: 90%;
+            max-height: 90%;
             position: absolute;
             top: 0;
             bottom: 0;
@@ -135,12 +136,51 @@
         }
     </style>
 </head>
-<body>
-
-    <div id="modalElement" class="modal" onclick="closeModal()">
+<body onkeyup="keyup(event)">
+    <div id="modalElement" class="modal">
+        <!--<img src="icons/close.svg" alt="" height=34 width=34></img>-->
+        <!--<img src="icons/arrow_left.svg" alt="" height=34 width=34></img>-->
+        <div id="modalContent"></div>
+        <!--<img src="icons/arrow_right.svg" alt="" height=34 width=34></img>-->
     </div>
 
     <script>
+        var imgList = null;
+        let actualFolder = "images";
+        function keyup(event) {
+
+            let modal = document.getElementById("modalElement");
+            if (modal.classList.contains("divActive")) {
+                if ("arrowright" == event.code.toLowerCase()) {
+                    let modalImg = document.getElementById("modalImage");
+                    let znalezionoObraz = false;
+                    for (var i = 0; i < imgList.length; i++) {
+                        if (znalezionoObraz)
+                        {
+                            elementClick(document.getElementById(imgList[i].replace(actualFolder + "/", "")));
+                            break;
+                        }
+                        if (imgList[i].replace(actualFolder + "/", "") == modalImg.getAttribute("alt"))
+                        {
+                            znalezionoObraz = true;
+                        }
+                    }
+                }
+                else if ("arrowleft" == event.code.toLowerCase()) {
+                    let modalImg = document.getElementById("modalImage");
+                    let znalezionoObraz = false;
+                    for (var i = imgList.length-1; i >-1; i--) {
+                        if (znalezionoObraz) {
+                            elementClick(document.getElementById(imgList[i].replace(actualFolder + "/", "")));
+                            break;
+                        }
+                        if (imgList[i].replace(actualFolder + "/", "") == modalImg.getAttribute("alt")) {
+                            znalezionoObraz = true;
+                        }
+                    }
+                }
+            }
+        }
 
         function closeModal(element) {
             let modal = document.getElementById("modalElement");
@@ -149,30 +189,31 @@
         }
 
         function elementClick(element) {
-            let modal = document.getElementById("modalElement");
-            modal.innerHTML = '';
+            let modalContent = document.getElementById("modalContent");
+            modalContent.innerHTML = '';
             let imageClon = element.cloneNode(true);
+            imageClon.setAttribute("id", "modalImage");
             imageClon.classList.add('imgScaling');
-            modal.appendChild(imageClon);
-            modal.classList.remove("divInActive");
-            modal.classList.add('divActive');
+            imageClon.setAttribute('onclick', 'closeModal()');
+            modalContent.appendChild(imageClon);
+            let modal = document.getElementById("modalElement");
+            if (!modal.classList.contains('divActive')) {
+                modal.classList.remove("divInActive");
+                modal.classList.add('divActive');
+            }
         }
 
         //Makes an asynch request, loading the getimages.php file
         function callForImages() {
 
-		console.log("jestem");
             //Create the request object
             var httpReq = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
 
             //When it loads,
             httpReq.onload = function () {
 
-                //Convert the result back into JSON
-                var result = JSON.parse(httpReq.responseText);
-
                 //Show the images
-                loadImages(result);
+                loadImages(JSON.parse(httpReq.responseText));
             }
 
             //Request the page
@@ -187,17 +228,17 @@
 
         //Generates the images and sticks them in the container
         function loadImages(images) {
-		console.log("jestem");
+            imgList = images;
             //For each image,
             for (var i = 0; i < images.length; i++) {
 
-		console.log("jestem");
                 //Make a new image element, setting the source to the source in the array
                 let newImage = document.createElement("img");
                 newImage.setAttribute("src", images[i]);
                 newImage.setAttribute('onclick', 'elementClick(this)');
-                let name = images[i].replace("images/", "");
+                let name = images[i].replace(actualFolder + "/", "");
                 newImage.setAttribute("alt", name);
+                newImage.setAttribute("id", name);
 
                 let element = document.createElement("figure");
                 element.classList.add('photo');
@@ -214,4 +255,5 @@
         callForImages();
     </script>
 </body>
+
 </html>
