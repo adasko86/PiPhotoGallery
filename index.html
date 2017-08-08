@@ -138,31 +138,31 @@
 </head>
 <body id="bod" onkeyup="keyup(event)">
     <div id="modalElement" class="modal">
-        <!--<img src="icons/close.svg" alt="" height=34 width=34></img>-->
-        <!--<img src="icons/arrow_left.svg" alt="" height=34 width=34></img>-->
         <div id="modalContent"></div>
-        <!--<img src="icons/arrow_right.svg" alt="" height=34 width=34></img>-->
     </div>
     <script src="hammer.js"></script>
 
     <script>
-
-        var blue = document.getElementById('modalElement');
-        var hammer = new Hammer.Manager(blue);
+		//element that swipe be working
+        var swipeElement = document.getElementById('modalElement');
+        var hammer = new Hammer.Manager(swipeElement);
+		//create swipe object 
         var swipe = new Hammer.Swipe();
-
         hammer.add(swipe);
-
+		
+		//handle swipe left 
         hammer.on('swipeleft', function () {
             NextElement();
         });
 
+		//handle swipe right 
         hammer.on('swiperight', function () {
             PreviousElement();
         });
 
         var imgList = null;
         let actualFolder = "images";
+		//key up event
         function keyup(event) {
 
             let modal = document.getElementById("modalElement");
@@ -194,7 +194,6 @@
         //show next element from list
         function NextElement()
         {
-            
             let modalImg = document.getElementById("modalImage");
             let znalezionoObraz = false;
             for (var i = 0; i < imgList.length; i++) {
@@ -210,12 +209,14 @@
             }
         }
 
+		//hide modal div
         function closeModal(element) {
             let modal = document.getElementById("modalElement");
             modal.classList.remove("divActive");
             modal.classList.add('divInActive');
         }
 
+		//picture click event
         function elementClick(element) {
             let modalContent = document.getElementById("modalContent");
             modalContent.innerHTML = '';
