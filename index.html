@@ -136,15 +136,31 @@
         }
     </style>
 </head>
-<body onkeyup="keyup(event)">
+<body id="bod" onkeyup="keyup(event)">
     <div id="modalElement" class="modal">
         <!--<img src="icons/close.svg" alt="" height=34 width=34></img>-->
         <!--<img src="icons/arrow_left.svg" alt="" height=34 width=34></img>-->
         <div id="modalContent"></div>
         <!--<img src="icons/arrow_right.svg" alt="" height=34 width=34></img>-->
     </div>
+    <script src="hammer.js"></script>
 
     <script>
+
+        var blue = document.getElementById('modalElement');
+        var hammer = new Hammer.Manager(blue);
+        var swipe = new Hammer.Swipe();
+
+        hammer.add(swipe);
+
+        hammer.on('swipeleft', function () {
+            NextElement();
+        });
+
+        hammer.on('swiperight', function () {
+            PreviousElement();
+        });
+
         var imgList = null;
         let actualFolder = "images";
         function keyup(event) {
@@ -152,32 +168,44 @@
             let modal = document.getElementById("modalElement");
             if (modal.classList.contains("divActive")) {
                 if ("arrowright" == event.code.toLowerCase()) {
-                    let modalImg = document.getElementById("modalImage");
-                    let znalezionoObraz = false;
-                    for (var i = 0; i < imgList.length; i++) {
-                        if (znalezionoObraz)
-                        {
-                            elementClick(document.getElementById(imgList[i].replace(actualFolder + "/", "")));
-                            break;
-                        }
-                        if (imgList[i].replace(actualFolder + "/", "") == modalImg.getAttribute("alt"))
-                        {
-                            znalezionoObraz = true;
-                        }
-                    }
+                    NextElement();
                 }
                 else if ("arrowleft" == event.code.toLowerCase()) {
-                    let modalImg = document.getElementById("modalImage");
-                    let znalezionoObraz = false;
-                    for (var i = imgList.length-1; i >-1; i--) {
-                        if (znalezionoObraz) {
-                            elementClick(document.getElementById(imgList[i].replace(actualFolder + "/", "")));
-                            break;
-                        }
-                        if (imgList[i].replace(actualFolder + "/", "") == modalImg.getAttribute("alt")) {
-                            znalezionoObraz = true;
-                        }
-                    }
+                    PreviousElement();
+                }
+            }
+        }
+
+        //show previous element from list
+        function PreviousElement() {
+            let modalImg = document.getElementById("modalImage");
+            let znalezionoObraz = false;
+            for (var i = imgList.length - 1; i > -1; i--) {
+                if (znalezionoObraz) {
+                    elementClick(document.getElementById(imgList[i].replace(actualFolder + "/", "")));
+                    break;
+                }
+                if (imgList[i].replace(actualFolder + "/", "") == modalImg.getAttribute("alt")) {
+                    znalezionoObraz = true;
+                }
+            }
+        }
+
+        //show next element from list
+        function NextElement()
+        {
+            
+            let modalImg = document.getElementById("modalImage");
+            let znalezionoObraz = false;
+            for (var i = 0; i < imgList.length; i++) {
+                if (znalezionoObraz)
+                {
+                    elementClick(document.getElementById(imgList[i].replace(actualFolder + "/", "")));
+                    break;
+                }
+                if (imgList[i].replace(actualFolder + "/", "") == modalImg.getAttribute("alt"))
+                {
+                    znalezionoObraz = true;
                 }
             }
         }
