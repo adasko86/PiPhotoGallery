@@ -1,7 +1,4 @@
-### Desktop:
-![](http://galeria.proinfo-as.pl/gallery.gif)
-
-### Mobile:
+### How It look:
 
 ![](https://github.com/adasko86/PiPhotoGallery/blob/master/gif_present.gif)
 
